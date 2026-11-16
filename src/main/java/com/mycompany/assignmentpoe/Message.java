@@ -11,14 +11,13 @@ import java.io.IOException;
  *
  * @author Student
  */
-public class Message { 
+public class Message {
     private int messageNum;
     private String recipient;
     private String messageText;
     private String messageID;
     private String messageHash;
     
-    // No arrays: we use String concatenation to store history
     private static int totalMessagesSent = 0;
     private static String allMessagesHistory = "";
 
@@ -31,7 +30,6 @@ public class Message {
         this.messageHash = createMessageHash();
     }
     
-    // For testing with fixed ID like 00:0:HITONIGHT
     public Message(int messageNum, String recipient, String messageText, String fixedID) {
         this.messageNum = messageNum;
         this.recipient = recipient;
@@ -44,7 +42,6 @@ public class Message {
         return messageID.length() <= 10;
     }
 
-    // Rubric says String: checkRecipientCell() - returns exact messages
     public String checkRecipientCell() {
         if (recipient == null) return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
         if (recipient.length() != 12) return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
@@ -52,7 +49,6 @@ public class Message {
         return "Cell phone number successfully captured.";
     }
     
-    // No arrays - no split()
     public String createMessageHash() {
         String trimmed = messageText.trim();
         if (trimmed.endsWith("?") || trimmed.endsWith(".") || trimmed.endsWith("!")) {
@@ -68,7 +64,6 @@ public class Message {
         if (lastSpace == -1) lastWord = trimmed;
         else lastWord = trimmed.substring(lastSpace + 1);
         
-        // Clean punctuation from words
         firstWord = firstWord.replaceAll("[^A-Za-z]", "");
         lastWord = lastWord.replaceAll("[^A-Za-z]", "");
         
@@ -76,7 +71,6 @@ public class Message {
         return (prefix + ":" + messageNum + ":" + firstWord + lastWord).toUpperCase();
     }
     
-    // Check message length
     public String checkMessageLength() {
         if (messageText.length() <= 250) return "Message ready to send.";
         else {
@@ -102,7 +96,6 @@ public class Message {
         return "MessageID: " + messageID + "\nMessage Hash: " + messageHash + "\nRecipient: " + recipient + "\nMessage: " + messageText;
     }
     
-    // Returns all messages sent while program running - no arrays
     public String printAllMessages() {
         if (allMessagesHistory.isEmpty()) return "No messages sent.";
         return allMessagesHistory;
@@ -112,7 +105,6 @@ public class Message {
         return totalMessagesSent;
     }
     
-    // JSON storage - research requirement
     public String storeMessage() {
         try {
             String safeMessage = messageText.replace("\"", "'");
@@ -126,10 +118,8 @@ public class Message {
         }
     }
     
-    // Getters for testing
     public String getMessageID() { return messageID; }
     public String getMessageHash() { return messageHash; }
     public String getRecipient() { return recipient; }
     public String getMessageText() { return messageText; }
 }
-

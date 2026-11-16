@@ -53,6 +53,8 @@ public class AssignmentPOE {
         System.out.print("Enter Password: ");
         String loginP = sc.nextLine();
 
-        System.out.println(login.returnLoginStatus(loginU, loginP));
+        System.out.println(login.returnLoginStatus(loginU, loginP)); 
+    }   
     }
+    
 

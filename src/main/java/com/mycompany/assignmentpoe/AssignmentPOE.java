@@ -9,6 +9,7 @@ import java.util.Scanner;
  *
  * @author Student
  */
+
 public class AssignmentPOE {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -21,29 +22,10 @@ public class AssignmentPOE {
         String lastName = sc.nextLine();
         System.out.print("Enter Username (must contain _ and <=5 chars): ");
         String username = sc.nextLine();
-        System.out.print("Enter Password (8 chars, capital, number, special): ");
+        System.out.print("Enter Password: ");
         String password = sc.nextLine();
         System.out.print("Enter Cell Phone (+27XXXXXXXXX): ");
         String cell = sc.nextLine();
-
-        // Check and print exact messages from rubric
-        if (!login.checkUserName(username)) {
-            System.out.println("Username is not correctly formatted, please ensure that your username contains an underscore and is no more than 5 characters in length.");
-        } else {
-            System.out.println("Username successfully captured.");
-        }
-
-        if (!login.checkPasswordComplexity(password)) {
-            System.out.println("Password is not correctly formatted, please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.");
-        } else {
-            System.out.println("Password successfully captured.");
-        }
-
-        if (!login.checkCellPhoneNumber(cell)) {
-            System.out.println("Cell phone number incorrectly formatted or does not contain international code.");
-        } else {
-            System.out.println("Cell phone number successfully added.");
-        }
 
         System.out.println(login.registerUser(username, password, cell, firstName, lastName));
 
@@ -52,9 +34,54 @@ public class AssignmentPOE {
         String loginU = sc.nextLine();
         System.out.print("Enter Password: ");
         String loginP = sc.nextLine();
+        System.out.println(login.returnLoginStatus(loginU, loginP));
+        if (!login.loginUser(loginU, loginP)) return;
 
-        System.out.println(login.returnLoginStatus(loginU, loginP)); 
-    }   
+        System.out.println("\nWelcome to QuickChat.");
+        System.out.print("How many messages you wish to enter? ");
+        int totalToEnter = Integer.parseInt(sc.nextLine());
+        int entered = 0;
+
+        Message dummy = new Message(0, "+27000000000", "dummy");
+
+        while (true) {
+            System.out.println("\nChoose: 1) Send Messages 2) Show recently sent messages 3) Quit");
+            System.out.print("Choice: ");
+            String menu = sc.nextLine();
+
+            if (menu.equals("1")) {
+                if (entered >= totalToEnter) {
+                    System.out.println("You have reached the limit of " + totalToEnter + " messages.");
+                    continue;
+                }
+                System.out.print("Enter Recipient (+27...): ");
+                String recipient = sc.nextLine();
+                System.out.print("Enter Message (<=250 chars): ");
+                String text = sc.nextLine();
+
+                Message msg = new Message(entered, recipient, text);
+                
+                System.out.println(msg.checkRecipientCell());
+                System.out.println(msg.checkMessageLength());
+                
+                if (!msg.checkRecipientCell().equals("Cell phone number successfully captured.")) continue;
+                if (!msg.checkMessageLength().equals("Message ready to send.")) continue;
+
+                System.out.println("Choose: 1) Send Message 2) Disregard Message 3) Store Message");
+                int sendChoice = Integer.parseInt(sc.nextLine());
+                System.out.println(msg.SentMessage(sendChoice));
+                
+                if (sendChoice == 1) {
+                    System.out.println("\n" + msg.printMessages());
+                    entered++;
+                }
+            } else if (menu.equals("2")) {
+                System.out.println("Coming Soon.");
+            } else if (menu.equals("3")) {
+                System.out.println("Total messages sent: " + dummy.returnTotalMessages());
+                System.out.println("Exiting...");
+                break;
+            }
+        }
     }
-    
-
+}

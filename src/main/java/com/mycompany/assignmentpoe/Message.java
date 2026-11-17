@@ -222,4 +222,8 @@ public class Message {
         try { if (!Files.exists(Paths.get("storedMessages.json"))) return; } catch (Exception e) {}
     }
     public String getMessageID() { return messageID; }
+
+    String returnTotalMessages() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

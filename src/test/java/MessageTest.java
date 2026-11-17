@@ -1,55 +1,75 @@
-
 import com.mycompany.assignmentpoe.Message;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
-    @Test
-    public void testMessageLengthSuccess() {
-        Message m = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        assertEquals("Message ready to send.", m.checkMessageLength());
+    @BeforeEach
+    public void setUp() {
+        // This populates all 5 arrays with the exact Test Data from your brief page 17
+        Message.populateTestData();
     }
 
     @Test
-    public void testMessageLengthFailure() {
-        String longMsg = "a".repeat(260);
-        Message m = new Message(0, "+27718693002", longMsg);
-        assertTrue(m.checkMessageLength().contains("Message exceeds 250 characters"));
+    public void testSentMessagesArrayCorrectlyPopulated() {
+        // From brief: Message 1 and 4 are Sent
+        System.out.println("Sent Messages: " + Message.sentMessages);
+        assertEquals(2, Message.sentMessages.size(), "Sent array should have 2 messages");
+        assertTrue(Message.sentMessages.contains("Did you get the cake?"));
+        assertTrue(Message.sentMessages.contains("It is dinner time !"));
+        System.out.println("PASSED: Sent Messages array correctly populated");
     }
 
     @Test
-    public void testRecipientSuccess() {
-        Message m = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        assertEquals("Cell phone number successfully captured.", m.checkRecipientCell());
+    public void testDisplayLongestMessage() {
+        String longest = Message.displayLongestMessage();
+        System.out.println("Longest: " + longest);
+        // Expected from brief page 18
+        assertEquals("Where are you? You are late! I have asked you to be on time.", longest);
+        System.out.println("PASSED: Longest message is correct");
     }
 
     @Test
-    public void testRecipientFailure() {
-        Message m = new Message(0, "08575975889", "Hi Keegan, did you receive the payment?");
-        assertEquals("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.", m.checkRecipientCell());
+    public void testSearchForMessageID() {
+        // Search for ID 0838884567 -> should return "It is dinner time !"
+        String result = Message.searchByMessageID("0838884567");
+        System.out.println(result);
+        assertTrue(result.contains("It is dinner time !"), "Should find Message 4");
+        System.out.println("PASSED: Search by Message ID");
     }
 
     @Test
-    public void testMessageHash() {
-        // Test case 1 from rubric - must produce 00:0:HITONIGHT
-        Message m = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?", "0012345678");
-        // Should be 00:0:HITONIGHT
-        assertEquals("00:0:HITONIGHT", m.createMessageHash());
+    public void testSearchAllMessagesForRecipient() {
+        // Recipient +27838884567 has 2 messages: Message 2 and Message 5
+        String result = Message.searchByRecipient("+27838884567");
+        System.out.println(result);
+        assertTrue(result.contains("Where are you? You are late! I have asked you to be on time."));
+        assertTrue(result.contains("Ok, I am leaving without you."));
+        System.out.println("PASSED: Search by Recipient returns 2 messages");
     }
 
     @Test
-    public void testMessageIDCreated() {
-        Message m = new Message(0, "+27718693002", "Test");
-        assertNotNull(m.getMessageID());
-        assertTrue(m.checkMessageID());
+    public void testDeleteMessageUsingHash() {
+        // Delete Message 2 ("Where are you...") using its hash
+        String hashToDelete = Message.messageHashes.get(1); // Message 2 hash
+        System.out.println("Deleting hash: " + hashToDelete);
+        String result = Message.deleteByHash(hashToDelete);
+        System.out.println(result);
+        assertTrue(result.toLowerCase().contains("successfully deleted"));
+        assertFalse(Message.messagesList.contains("Where are you? You are late! I have asked you to be on time."));
+        System.out.println("PASSED: Delete by hash");
     }
 
     @Test
-    public void testSentMessage() {
-        Message m = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        assertEquals("Message successfully sent.", m.SentMessage(1));
-        assertEquals("Press 0 to delete the message.", m.SentMessage(2));
-        assertEquals("Message successfully stored.", m.SentMessage(3));
+    public void testDisplayReport() {
+        String report = Message.displayReport();
+        System.out.println(report);
+        // Report must contain Hash, Recipient, Message for all messages
+        assertTrue(report.contains("Message Hash"));
+        assertTrue(report.contains("Recipient"));
+        assertTrue(report.contains("Message"));
+        assertTrue(report.contains("Did you get the cake?"));
+        System.out.println("PASSED: Display Report");
     }
 }

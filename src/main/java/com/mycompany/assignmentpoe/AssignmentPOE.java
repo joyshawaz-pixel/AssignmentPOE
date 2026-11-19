@@ -9,7 +9,7 @@ import java.util.Scanner;
  *
  * @author Student
  */
-//Part 3 
+//Part 1,2,3 
 public class AssignmentPOE {
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {

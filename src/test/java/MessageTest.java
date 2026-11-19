@@ -7,7 +7,7 @@ public class MessageTest {
 
     @BeforeEach
     public void setUp() {
-        // This populates all 5 arrays with the exact Test Data from your brief page 17
+        // This populates all 5 arrays.
         Message.populateTestData();
     }
 
@@ -25,7 +25,7 @@ public class MessageTest {
     public void testDisplayLongestMessage() {
         String longest = Message.displayLongestMessage();
         System.out.println("Longest: " + longest);
-        // Expected from brief page 18
+        // Expected from brief.
         assertEquals("Where are you? You are late! I have asked you to be on time.", longest);
         System.out.println("PASSED: Longest message is correct");
     }

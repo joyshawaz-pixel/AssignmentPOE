@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest {
     
-    // Test data from rubric table
+    // Test data.
     @Test
     public void testUsernameCorrectlyFormatted() {
         Login login = new Login();
